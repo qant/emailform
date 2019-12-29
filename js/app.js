@@ -21,24 +21,52 @@ function initApp() {
 }
 
 function checkField() {
-  is_empty(this);
+  if (this.type === "email") {
+    validateEmail(this);
+  } else {
+    is_empty(this);
+  }
   is_filled();
 }
 
 function is_empty(field) {
   if (field.value.length > 0) {
-    field.style.borderBottomColor = "green";
-    field.classList.remove("error");
+    fieldOk(field);
   } else {
-    field.style.borderBottomColor = "red";
-    field.classList.add("error");
+    fieldError(field);
   }
 }
 
 function is_filled() {
-  if (email.value != "" && tema.value != "" && message.value != "") {
+  const errors = document.querySelectorAll(".error");
+  if (
+    email.value != "" &&
+    tema.value != "" &&
+    message.value != "" &&
+    errors.length === 0
+  ) {
     sendBtn.disabled = false;
   } else {
     sendBtn.disabled = true;
+  }
+}
+
+function fieldOk(field) {
+  field.style.borderBottomColor = "green";
+  field.classList.remove("error");
+}
+
+function fieldError(field) {
+  field.style.borderBottomColor = "red";
+  field.classList.add("error");
+}
+
+function validateEmail(field) {
+  const email = field.value;
+
+  if (email.indexOf("@") != -1 && email.length != 0) {
+    fieldOk(field);
+  } else {
+    fieldError(field);
   }
 }
